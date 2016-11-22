@@ -31,9 +31,8 @@ public class ConnectionPool
 
 		SharedPoolDataSource tds = new SharedPoolDataSource();
 		tds.setConnectionPoolDataSource(cpds);
-		tds.setMaxActive(30);
-		tds.setMaxWait(100);
-
+		tds.setMaxActive(1000); // max connection _mysql at the same time
+		tds.setMaxWait(-1); // maximum number of milliseconds that the pool will wait, -1 is wait indefinitely
 		ds = tds;
 	}
 	
@@ -58,7 +57,6 @@ public class ConnectionPool
 	}
 
 	public static Connection getConnection() throws SQLException {
-		// initPool(); // Nguy hiem: se lam tang thread_connection moi lan truy van
 		try {
 			return ds.getConnection();
 		} catch (Exception e) {
@@ -69,11 +67,6 @@ public class ConnectionPool
 	
 	public static void main(String [] args) throws SQLException
 	{
-		while(true)
-		{
-			long start = System.currentTimeMillis();
-			getConnection();
-			System.out.println(System.currentTimeMillis() - start);
-		}
+		
 	}
 }
